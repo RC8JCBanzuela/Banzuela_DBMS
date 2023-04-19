@@ -1,0 +1,73 @@
+DROP DATABASE jcmanagementdb;
+create DATABASE jcmanagementdb;
+
+use jcmanagementdb;
+
+CREATE TABLE client(
+  client_id int PRIMARY KEY AUTO_INCREMENT,
+  fname varchar(255),
+  lname varchar (255),
+  gender ENUM ('male' ,'female') DEFAULT 'male',
+  age int(255),
+  contact_address varchar(255),
+  email varchar(255),
+  pssword varchar(255)
+);
+
+CREATE TABLE transaction_records(
+  trans_id INT PRIMARY KEY AUTO_INCREMENT,
+  transac_name varchar (255),
+  client_id int,
+  amount int, 
+  dte date,
+  CONSTRAINT FKclientID FOREIGN KEY (client_id)
+  REFERENCES client(client_id)
+);
+
+CREATE TABLE reports (
+ report_ID INT PRIMARY KEY AUTO_INCREMENT,
+ total_amount int (255),
+ report_date date,
+ client_id int,
+ trans_id int,
+ CONSTRAINT FKreportclientID FOREIGN KEY (client_id)
+ REFERENCES client(client_id),
+ CONSTRAINT FKtransid FOREIGN KEY (trans_id)
+ REFERENCES  transaction_records(trans_id)
+);
+
+CREATE TABLE payment (
+payment_ID INT PRIMARY KEY AUTO_INCREMENT,
+payment_date date,
+payment_amount int (255),
+client_id int,
+CONSTRAINT FKpaymentclientid FOREIGN KEY (client_id)
+REFERENCES client(client_id)
+);
+
+CREATE TABLE member (
+   member_ID INT PRIMARY KEY AUTO_INCREMENT,
+   member_fname varchar (255),
+   member_lname varchar (255),
+   member_totalamount int (255),
+   member_amount int (255),
+   member_activemembership ENUM ('active' ,'inactive') DEFAULT 'active'
+);
+
+CREATE TABLE schedule (
+ sched_ID INT PRIMARY KEY AUTO_INCREMENT,
+ sched_fname varchar (255),
+ sched_lname varchar (255),
+ sched_activity varchar (255),
+ sched_Date date,
+ sched_timestart time,
+ sched_nameofinstructor varchar (255)
+);
+
+CREATE TABLE trainor (
+    trainor_id INT PRIMARY KEY AUTO_INCREMENT,
+    trainor_name varchar (255),
+    trainor_salary int (255),
+    trainor_email varchar (255),
+    trainor_pssword varchar (255)
+);
