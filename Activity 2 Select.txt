@@ -1,0 +1,114 @@
+DROP DATABASE jcmanagementdb;
+create DATABASE jcmanagementdb;
+
+use jcmanagementdb;
+
+CREATE TABLE client(
+  client_id int PRIMARY KEY AUTO_INCREMENT,
+  fname varchar(255),
+  lname varchar (255),
+  gender ENUM ('male' ,'female') DEFAULT 'male',
+  age int(255),
+  contact_address varchar(255),
+  email varchar(255),
+  pssword varchar(255)
+);
+
+CREATE TABLE transaction_records(
+  trans_id INT PRIMARY KEY AUTO_INCREMENT,
+  transac_name varchar (255),
+  client_id int,
+  amount int, 
+  dte date,
+  CONSTRAINT FKclientID FOREIGN KEY (client_id)
+  REFERENCES client(client_id)
+);
+
+CREATE TABLE reports (
+ report_ID INT PRIMARY KEY AUTO_INCREMENT,
+ total_amount int (255),
+ report_date date,
+ client_id int,
+ trans_id int,
+ CONSTRAINT FKreportclientID FOREIGN KEY (client_id)
+ REFERENCES client(client_id),
+ CONSTRAINT FKtransid FOREIGN KEY (trans_id)
+ REFERENCES  transaction_records(trans_id)
+);
+
+CREATE TABLE payment (
+payment_ID INT PRIMARY KEY AUTO_INCREMENT,
+payment_date date,
+payment_amount int (255),
+client_id int,
+CONSTRAINT FKpaymentclientid FOREIGN KEY (client_id)
+REFERENCES client(client_id)
+);
+
+CREATE TABLE member (
+   member_ID INT PRIMARY KEY AUTO_INCREMENT,
+   member_fname varchar (255),
+   member_lname varchar (255),
+   member_totalamount int (255),
+   member_amount int (255),
+   member_activemembership ENUM ('active' ,'inactive') DEFAULT 'active'
+);
+
+CREATE TABLE schedule (
+ sched_ID INT PRIMARY KEY AUTO_INCREMENT,
+ sched_session int (255),
+ sched_activity varchar (255),
+ sched_Date date,
+ sched_timestart time,
+ sched_nameofinstructor varchar (255)
+);
+
+CREATE TABLE trainor (
+    trainor_id INT PRIMARY KEY AUTO_INCREMENT,
+    trainor_name varchar (255),
+    trainor_salary int (255),
+    trainor_email varchar (255),
+    trainor_pssword varchar (255)
+);
+
+--INSERT INTO client--
+
+INSERT INTO client (fname, lname, gender, age, contact_address, email, pssword)
+VALUES ("John Carlo", "Banzuela", "male", 20, 0912345678, "jc@email.com", "0000"),
+("John Gabriel", "Blas", "male", 20, 0913345679, "jbb@email.com", "1111"),
+("Jemuell", "Gaudia", "male", 21, 0922345698, "jg@email.com", "2222");
+
+--MEMBER--
+
+INSERT INTO `member`(`member_fname`, `member_lname`, `member_totalamount`, `member_amount`, `member_activemembership`) 
+VALUES ("John Carlo", "Banzuela", 200, 200, "active"),
+("John Gabriel", "Blas", 300, 300, "active"),
+("Jemuell", "Gaudia", 400, 400, "active");
+
+-- DATE nagloko to sir sa payment_date nakalagay na error is  
+ Warning: #1265 Data truncated for column 'payment_date' at row 1
+ Warning: #1265 Data truncated for column 'payment_date' at row 2
+ Warning: #1265 Data truncated for column 'payment_date' at row 3 --
+
+INSERT INTO `payment`(`payment_date`, `payment_amount`, `client_id`) 
+VALUES (23/04/26, 200, 1),
+(23/04/27, 300, 2),
+(23/04/27, 400, 3);
+
+--TRAINER--
+
+INSERT INTO `trainor`(`trainor_name`, `trainor_salary`, `trainor_email`, `trainor_pssword`) 
+VALUES ("Nomer", "69420", "nomeraleviado@email.com", "trainor0000"),
+("John Doe", "67410", "jondoe@email.com", "trainor1111"),
+("Tim Ba", "66400", "TimBah@email.com", "trainor2222");
+
+--SCHEDULE--
+INSERT INTO `schedule`(`sched_session`, `sched_activity`, `sched_Date`, `sched_timestart`, `sched_nameofinstructor`) 
+VALUES (6,'Bench Press','23/04/26','9:00','Nomer'),
+(7,'Deadlift','23/04/27','10:00','John Doe'),
+(8,'Bulgarian Deadlift','23/04/27','11:00','Tim Ba');
+
+--SELECTING THE DATA--
+
+1.SELECT fname, lname, sched_session, sched_Date, sched_timestart, trainor_name FROM client, schedule, trainor
+2.SELECT fname, lname, member_totalamount, member_amount, member_activemembership FROM client, member
