@@ -110,5 +110,18 @@ VALUES (6,'Bench Press','23/04/26','9:00','Nomer'),
 
 --SELECTING THE DATA--
 
-1.SELECT fname, lname, sched_session, sched_Date, sched_timestart, trainor_name FROM client, schedule, trainor
-2.SELECT fname, lname, member_totalamount, member_amount, member_activemembership FROM client, member
+1.
+SELECT CONCAT (fname, " ", lname) AS fullName,
+sched_session,sched_activity,sched_Date,sched_timestart, sched_nameofinstructor
+FROM(client INNER JOIN schedule ON client.client_id =schedule.sched_ID);
+
+2. ?
+
+--ACTIVITY 3--
+1. SELECT CONCAT(client.fname, ' ', client.lname) AS clientName, trainor.trainor_name, payment.payment_amount,
+SUM(CASE WHEN schedule.sched_Date < CURDATE() THEN 0 ELSE payment.payment_amount END) AS total_amount_to_pay
+FROM client 
+INNER JOIN schedule ON client.client_id = schedule.sched_ID
+INNER JOIN trainor ON schedule.sched_nameofinstructor = trainor.trainor_name
+INNER JOIN payment ON client.client_id = payment.client_id
+GROUP BY client.client_id, trainor.trainor_id;
