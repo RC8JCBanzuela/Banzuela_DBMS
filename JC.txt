@@ -1,0 +1,75 @@
+DROP DATABASE longtestgradesjcbanzuela;
+CREATE DATABASE longtestgradesjcbanzuela;
+
+CREATE TABLE Student (
+    StudNo varchar(20) NOT NULL,
+    StudFname varchar(255),
+    StudLname varchar(255),
+    Major varchar(255),
+    Gender varchar(255),
+    HomeAddress varchar(255),
+    PRIMARY KEY (StudNo)
+);
+
+CREATE TABLE Subject (
+    SubjCode varchar(20) NOT NULL,
+    SubjectDescr varchar (255),
+    PRIMARY KEY (SubjCode)
+);
+
+CREATE TABLE Grade (
+    StudNo varchar(20) NOT NULL,
+    SubjCode varchar(20),
+    Grade varchar(20),
+    CONSTRAINT FK_studntcode FOREIGN KEY (StudNo)
+    REFERENCES Student(StudNo),
+    CONSTRAINT FK_subcode FOREIGN KEY (SubjCode)
+    REFERENCES Subject(SubjCode)
+);
+
+INSERT INTO `student`(`StudNo`, `StudFname`, `StudLname`, `Major`, `Gender`, `HomeAddress`) 
+VALUES ('S-101','Ana','Cruz','ECE','F','Malolos, Bulacan'),
+('S-102','Hazel','Ponce','COE','F','Plaridel, Bulacan'),
+('S-103','Cristov','Concio','ECE','M','Malolos, Bulacan'),
+('S-104','Aris','Clavio','COE','M','Pulilan, Bulacan'),
+('S-105','Honey','Pelayo','COE','F','Plaridel, Bulacan'),
+('S-106','Carrie','Abao','ECE','F','Pulilan, Bulacan')
+
+--insert to grade--
+
+INSERT INTO grade (`StudNo`, `SubjCode`, `Grade`)
+VALUES ('S-101','Chem 123', 2.00),
+('S-101','Math 122', 1.00),
+('S-101','Math 123', 1.50),
+('S-102','Chem 123', 1.75),
+('S-102','Math 122', 1.25),
+('S-102','Math 123', 1.50),
+('S-103','Chem 123', 2.00),
+('S-103','Math 122', 1.75),
+('S-103','Math 123', 1.25),
+('S-104','Chem 123', 1.25),
+('S-104','Math 122', 2.25),
+('S-104','Math 123', 2.50),
+('S-105','Chem 123', 1.25),
+('S-105','Math 122', 2.50),
+('S-105','Math 123', 1.25),
+('S-106','Chem 123', 1.25),
+('S-106','Math 122', 1.50),
+('S-106','Math 123', 1.75)
+
+--insert into subject--
+INSERT INTO `subject`(`SubjCode`, `SubjectDescr`) 
+VALUES ('Chem 123','Chemistry'),
+('Math 122','Trigonometry'),
+('Math 123','Algebra')
+
+--select--
+1.SELECT CONCAT(StudFname, ' ', StudLname) AS fullName, HomeAddress 
+FROM student
+WHERE Major = 'ECE' AND Gender = 'F' AND HomeAddress = 'Malolos, Bulacan' ;
+
+2. ?
+
+3. SELECT CONCAT(StudFname, " ", StudLname) AS FullName, Gender, HomeAddress
+FROM student 
+WHERE Major = 'COE';
